@@ -60,7 +60,7 @@ service history, a contact lookup. No single source answers it.
 > time to resolve?*
 
 Five, median 90 minutes. One tool call. Vector search cannot answer this at
-any level of retrieval quality — counting is not a retrieval problem. If your
+any level of retrieval quality, counting is not a retrieval problem. If your
 users ask "how many" or "how often", retrieval alone will not serve them.
 
 **The same question, a different user.**
@@ -137,8 +137,8 @@ earns its place here.
 **Here:** 200 incidents across 8 services over 12 months in SQLite, and 14
 markdown postmortems in `data/postmortems/`.
 
-Only 14 of the 200 have a postmortem, which is realistic — nobody writes one
-for a routine Sev-3 — and it does real work. Any question about *why* needs
+Only 14 of the 200 have a postmortem, which is realistic, nobody writes one
+for a routine Sev-3 and it does real work. Any question about *why* needs
 the documents. Any question about *how often* needs the table.
 
 `generate_data.py` is seeded, so the incident IDs in this README will match
@@ -151,7 +151,7 @@ what you see. Three things are planted deliberately:
 - **None of those five say "connection pool" in the title or summary.** The
   phrase appears only in root-cause sections, so a latency question has to
   retrieve them semantically rather than lexically. If you are building a
-  retrieval demo, plant something your keyword search would miss — otherwise
+  retrieval demo, plant something your keyword search would miss otherwise
   you have not demonstrated anything.
 - **The same failure mode in a second service** (INC-0117, inventory), so
   cross-service patterns are findable.
@@ -166,8 +166,8 @@ prompt.
 
 **Chunk on semantic boundaries, not character counts.** A fixed-size splitter
 cuts a root cause in half and staples the tail to the front of a timeline.
-Postmortems have natural sections — summary, timeline, root cause, resolution,
-notes — so each chunk is one section of one document and is about exactly one
+Postmortems have natural sections summary, timeline, root cause, resolution,
+notes so each chunk is one section of one document and is about exactly one
 thing. 14 documents, 69 chunks.
 
 Whatever your documents are, find the boundary the author already put there.
@@ -191,7 +191,7 @@ Cheap, and it measurably improves matching against conversational questions.
 back to a structured record, and it lets retrieval be filtered by a field
 rather than hoping the embedding encoded it.
 
-**Decide what not to index.** Follow-up checklists are excluded here —
+**Decide what not to index.** Follow-up checklists are excluded here 
 mostly `[ ] not done` boilerplate that dilutes retrieval without adding
 meaning. Exclusion is a retrieval decision and it is rarely discussed.
 
@@ -214,7 +214,7 @@ governance decision worth making on purpose.
 ## 2. Tool descriptions are documentation with a non-human reader
 
 The model picks tools by reading their descriptions. A vague description does
-not produce a confused user who asks a follow-up question — it produces a
+not produce a confused user who asks a follow-up question, it produces a
 wrong tool call and a wrong answer, silently.
 
 Five tools, all read-only:
@@ -222,7 +222,7 @@ Five tools, all read-only:
 | Tool | Reaches | Why separate |
 |---|---|---|
 | `search_postmortems` | Chroma | Semantic search for *why* something happened |
-| `list_incidents` | SQLite | Filtered records — which, when, what kind |
+| `list_incidents` | SQLite | Filtered records which, when, what kind |
 | `get_incident` | SQLite | One record by id |
 | `incident_stats` | SQLite | Counts, median, mean, breakdowns |
 | `get_oncall_contact` | SQLite | Who to call. Access-restricted. |
@@ -240,7 +240,7 @@ Same discipline as good API documentation, for a reader that will never ask
 you to clarify.
 
 **How much the description controls:** raising a Python default parameter did
-nothing here, because the model was passing the value explicitly — it had read
+nothing here, because the model was passing the value explicitly it had read
 the number out of the description text. Descriptions are not commentary. They
 are behaviour.
 
@@ -277,7 +277,7 @@ def _redact(row, ctx):
 
 The tool you gate is not the boundary. The data is.
 
-**Make the boundary per field.** `owning_team` is not restricted — a team name
+**Make the boundary per field.** `owning_team` is not restricted, a team name
 is not personal data. `contact_phone` is. Gating whole tools is blunt enough
 that people route around it.
 
@@ -336,7 +336,7 @@ ask".
 anyone. Read-only end to end.
 
 **No memory between questions.** Each starts clean. For a single question
-during an incident that is the right trade — no stale context carried from a
+during an incident that is the right trade, no stale context carried from a
 conversation an hour ago. A multi-turn troubleshooting session would need this
 to change, and that change is not free.
 
@@ -367,7 +367,7 @@ here is crossing the boundary, not the model.
 
 **If a wrong answer is expensive and unverifiable, be careful.** Grounding and
 citation reduce this, they do not remove it. Here, every claim carries an
-incident ID a reader can check — if your domain has no equivalent of that,
+incident ID a reader can check if your domain has no equivalent of that,
 that is a problem to solve before you ship.
 
 **If your data has no access boundaries, you have less to design and more
@@ -404,7 +404,7 @@ invisible in the answer and obvious in the trace.
 `list_incidents` returned 20 rows by date, so the Sev-1 at the centre of the
 pattern fell outside the window. The answer was coherent and incomplete, which
 is worse than an obvious error. Fix described in the tool-descriptions section
-above — the number was coming from the description, not the Python default.
+above the number was coming from the description, not the Python default.
 
 **3. Retrieval returns a subset and nothing says so.** Search consistently
 returns chunks from about three of the five relevant postmortems. Nothing in
@@ -486,7 +486,7 @@ Nothing here is about incident response.
 
 The shape is: knowledge split across structured records and written
 documents, questions that span both, and different people who should see
-different subsets. Wherever that holds, the same four pieces apply —
+different subsets. Wherever that holds, the same four pieces apply 
 retrieval with ingestion-time decisions, tools for what retrieval cannot do,
 authorization at the tool boundary, and a trace of what was actually called.
 
