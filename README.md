@@ -14,8 +14,8 @@ right one, where the permission check lives, and what you can see after the
 fact. Those four things are what this repo is about. Incident response is just
 the vehicle.
 
-The narrative version — the problem, why the obvious alternatives fall short,
-and what this means beyond one domain — is here: **[link to Medium post]**.
+The narrative version: the problem, why the obvious alternatives fall short,
+and what this means beyond one domain is here **[Medium post](https://medium.com/@priyansh.zinzuvadia/the-agent-was-the-easy-part-0ec9716c58d7?sharedUserId=priyansh.zinzuvadia)**.
 This README is the implementation reasoning.
 
 ### Who this is for
